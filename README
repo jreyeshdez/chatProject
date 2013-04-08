@@ -2,9 +2,13 @@
 
 ***************
 
-An environment with frames windows that consists in a client and a server that interact with the clients and servers 
-so as to create a chat, its name is "ChatClient" and "ChatServer". This Java App was developed in order to help to 
-teachers with software and hardware issues. When teachers had a problem with any software or hardware, they asked me 
-for help by this Java App.
+An environment with frames windows that consists 
+in a client and a server that interact with the 
+clients and servers so as to create a chat, 
+its name is "ChatClient" and "ChatServer". 
+This Java App was developed in order to help to 
+teachers with software and hardware issues. 
+When teachers had a problem with any software or 
+hardware, they asked me for help by this Java App.
 
 ***************
