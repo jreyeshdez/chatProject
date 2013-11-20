@@ -1,14 +1,11 @@
 ## - This file was created by IntelliJ IDEA 12.0.4 for binding GitHub repository - ##
 
-***************
+****************************************************************
 
-An environment with frames windows that consists 
-in a client and a server that interact with the 
-clients and servers so as to create a chat, 
-its name is "ChatClient" and "ChatServer". 
-This Java App was developed in order to help to 
-teachers with software and hardware issues. 
-When teachers had a problem with any software or 
-hardware, they asked me for help by this Java App.
+Development of a Java application which was used 
+as a helping tool in hardware and software issues. 
+It is an environment with frames developed using Java Swing. 
+It consists of a client and a server that interact with each 
+ther to allow two or more users to communicate instantly.
 
-***************
+****************************************************************
