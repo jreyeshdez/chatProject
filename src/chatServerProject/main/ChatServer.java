@@ -1,51 +1,50 @@
 package chatServerProject.main;
 import java.net.*;
 import java.io.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-public class ChatServidor extends Thread {
-        public final String cierreDeConexion="#CERRAR_CONEXION#";
+
+public class ChatServer extends Thread {
+        public final String closeConnection ="#CLOSE_CONNECTION#";
         private ServerSocket server;
         private Socket socket;
         private int puerto;
         private BufferedReader in;
         private PrintWriter out;
-        private boolean conectado;
-        private FrameServidor frameServidor;
+        private boolean connected;
+        private FrameServer frameServer;
         
-        public ChatServidor(int puerto, FrameServidor frameServidor) {
-                this.puerto=puerto;
-                this.frameServidor=frameServidor;
-                conectado=false;
+        public ChatServer(int port, FrameServer frameServer) {
+                this.puerto=port;
+                this.frameServer = frameServer;
+                connected =false;
         }
         public void run() {
-                iniciar();
-                recibir();
+                launch();
+                receive();
         }
-        private void iniciar() {
+        private void launch() {
              try {
-                server=new ServerSocket((int)puerto);
+                server=new ServerSocket(puerto);
                 if (server!=null)
                         socket=server.accept();
                         if (socket!=null) {
-                                frameServidor.setTextoBoton("Desconectar");
-                                conectado=true;
+                                frameServer.setTextButton("Desconectar");
+                                connected =true;
                                 //recupero el objeto InetAddress correspondiente al cliente
                                 InetAddress iaCliente=socket.getInetAddress();
                                 //obtengo la dirección IP del cliente
                                 String ipCliente=iaCliente.getHostAddress();
-                                frameServidor.setIPCliente(ipCliente);
+                                frameServer.setIPClient(ipCliente);
                                 in=new BufferedReader(new InputStreamReader(socket.getInputStream()));
                                 out=new PrintWriter(socket.getOutputStream(),true);
                         } else
-                                cerrar();
+                                close();
              } catch (IOException ioex) {
-                     cerrar();
+                     close();
              } catch (IllegalArgumentException iae) {
-                     cerrar();
+                     close();
              }
         }
-        public void cerrar() {
+        public void close() {
              try {
                 if (server!=null)
                         server.close();
@@ -55,41 +54,41 @@ public class ChatServidor extends Thread {
                         in.close();
                 if (out!=null)
                         out.close();
-                conectado=false;
-                frameServidor.setTextoBoton("Conectar");
+                connected =false;
+                frameServer.setTextButton("Connect");
              } catch (IOException ioex) {}
         }
-        public void enviar(String texto) {
-            out.println(texto);
+        public void send(String text) {
+            out.println(text);
         }
-        public void recibir() {
+        public void receive() {
             int i;
             char caracter;
-            StringBuffer texto= new StringBuffer("");
-            String linea;
+            StringBuffer text= new StringBuffer("");
+            String line;
             try {
-                while (conectado==true){
-                    texto.delete(0, texto.length()); //eliminamos la cadena inmediatamente anterior
-                                                    // justo después del retorno del carro para no repetir el texto
+                while (connected){
+                    text.delete(0, text.length()); //eliminamos la cadena inmediatamente anterior
+                                                    // justo después del retorno del carro para no repetir el text
                     i=in.read();//leemos la entrada
                     //caracter=(char)i; //convertimos el entero a caracter (ASCII)
-                    //texto.append(caracter); //lo vamos concatenando al texto, el cual es de tipo bufferstring                 
+                    //text.append(caracter); //lo vamos concatenando al text, el cual es de tipo bufferstring
                     while (i!=13){ //comprobamos si el caracter es el retorno de carro (enter)
                         caracter=(char)i;//lo convertimos
-                        texto.append(caracter); //lo concatenamos
+                        text.append(caracter); //lo concatenamos
                         i=in.read();//leemos el siguiente caracter      
                     }
                     i=in.read(); //leemos el 10 (salto de línea) pasa saber dónde termina
-                                   //y comenzar la siguiente línea de texto
-                    linea=texto.toString();
-                    if (linea.equalsIgnoreCase(cierreDeConexion)){
-                        cerrar();
+                                   //y comenzar la siguiente línea de text
+                    line=text.toString();
+                    if (line.equalsIgnoreCase(closeConnection)){
+                        close();
                     }else{                        
-                        frameServidor.setTextoChat(linea); 
+                        frameServer.setTextChat(line);
                     }
                 }
             }catch (IOException ex) {
-                    cerrar();
+                    close();
             }
         }
 }
